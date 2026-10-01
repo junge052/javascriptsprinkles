@@ -54,7 +54,7 @@ function addBox(rotation, color, xPosition, yPosition) {
     );
 
     box.style.width = `${5 * finalScale}px`;
-    box.style.height = `${26 * finalScale}px`;
+    box.style.height = `${25 * finalScale}px`;
 
     // COLOR
     box.style.backgroundColor = color;
@@ -106,12 +106,12 @@ function generatePattern() {
         document.createElement('div');
 
     // SPACING
-    const stepX = 20;
+    const stepX = 15;
     const stepY = 12;
 
     // PATTERN SIZE
-    const patternWidth = 900;
-    const patternHeight = 10;
+    const patternWidth = 1000;
+    const patternHeight = 16;
 
     newPattern.style.position = 'relative';
     newPattern.style.width = `${patternWidth}px`;
