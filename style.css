@@ -1,0 +1,9 @@
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background-color: #111;  /* Optional dark background */
+}
