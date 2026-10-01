@@ -1,62 +1,173 @@
 const container = document.getElementById('pattern');
-const colors = ['#6AFFB7', '#D1FFE9', '#C1CFDA', '#D9D9D9', '#A6D3E2', '#F6BCE5'];
-let patternCount = 0;
-//first pattern
-function addBox(rotation, color, xPosition, yPosition) {
-    const box = document.createElement('div');
-    box.style.position = 'absolute';
-    box.style.width = '5px';
-    box.style.height = '26px';
-    box.style.backgroundColor = color;
-    box.style.left = xPosition + 'px';
-    box.style.top = yPosition + 'px';
-    box.style.transition = 'transform 0.1s ease-in';
 
-    const baseTransform = `rotate(${rotation}deg)`;
+const colors = [
+    '#6AFFB7',
+    '#D1FFE9',
+    '#C1CFDA',
+    '#D9D9D9',
+    '#A6D3E2',
+    '#F6BCE5'
+];
+
+let patternCount = 0;
+
+// SLIDERS
+const sizeSlider = document.getElementById('sizeSlider');
+const variationSlider = document.getElementById('variationSlider');
+
+let sprinkleSize = 1;
+let sprinkleVariation = 0;
+
+
+// UPDATE SIZE
+sizeSlider.addEventListener('input', () => {
+    sprinkleSize = parseFloat(sizeSlider.value);
+});
+
+
+// UPDATE VARIATION
+variationSlider.addEventListener('input', () => {
+    sprinkleVariation = parseFloat(variationSlider.value);
+});
+
+
+// CREATE ONE SPRINKLE
+function addBox(rotation, color, xPosition, yPosition) {
+
+    const box = document.createElement('div');
+
+    box.classList.add('sprinkle');
+
+    box.style.position = 'absolute';
+
+    // RANDOM VALUES
+    const randomSize = Math.random() * 2 - 1;
+    const randomRotation = Math.random() * 2 - 1;
+
+    // SIZE
+    const variationAmount =
+        randomSize * sprinkleVariation;
+
+    const finalScale = Math.max(
+        0.2,
+        sprinkleSize + variationAmount
+    );
+
+    box.style.width = `${5 * finalScale}px`;
+    box.style.height = `${26 * finalScale}px`;
+
+    // COLOR
+    box.style.backgroundColor = color;
+
+    // POSITION
+    box.style.left = `${xPosition}px`;
+    box.style.top = `${yPosition}px`;
+
+    // ROTATION
+    const rotationVariation =
+        randomRotation * sprinkleVariation * 90;
+
+    const finalRotation =
+        rotation + rotationVariation;
+
+    box.dataset.rotation = finalRotation;
+
+    const baseTransform =
+        `rotate(${finalRotation}deg)`;
+
     box.style.transform = baseTransform;
 
+    // ANIMATION
+    box.style.transition = 'transform 0.1s ease-in';
+
+    // HOVER
     box.addEventListener('mouseenter', () => {
-        box.style.transform = `${baseTransform} scale(5)`;
+        box.style.transform =
+            `rotate(${box.dataset.rotation}deg) scale(5)`;
+
         box.style.zIndex = '10';
     });
 
     box.addEventListener('mouseleave', () => {
-        box.style.transform = baseTransform;
+        box.style.transform =
+            `rotate(${box.dataset.rotation}deg)`;
+
         box.style.zIndex = '1';
     });
+
     return box;
 }
-//click generate pattern
+
+
+// GENERATE PATTERN
 function generatePattern() {
-    const newPattern = document.createElement('div');
-    const stepX = 20; //space in between horizontal
-    const stepY = 12; //space vertical
+
+    const newPattern =
+        document.createElement('div');
+
+    // SPACING
+    const stepX = 20;
+    const stepY = 12;
+
+    // PATTERN SIZE
     const patternWidth = 900;
-    const patternHeight = 10; //bigger
-    newPattern.style.position = 'relative'; //absolute
+    const patternHeight = 10;
+
+    newPattern.style.position = 'relative';
     newPattern.style.width = `${patternWidth}px`;
     newPattern.style.height = `${patternHeight}px`;
-    newPattern.style.top = `${patternCount * patternHeight}px`;
     newPattern.style.left = '0px';
 
     let count = 0;
 
-    for (let x = 0; x < patternWidth; x = x + stepX) {
-        for (let y = 0; y < patternHeight; y = y + stepY) {
-            const color = colors[count % colors.length];
-            const rotation = count * 25;
+    // CREATE SPRINKLES
+    for (
+        let x = 0;
+        x < patternWidth;
+        x += stepX
+    ) {
 
-            const box = addBox(rotation, color, x, y);
+        for (
+            let y = 0;
+            y < patternHeight;
+            y += stepY
+        ) {
+
+            const color =
+                colors[count % colors.length];
+
+            const rotation =
+                count * 25;
+
+            const box = addBox(
+                rotation,
+                color,
+                x,
+                y
+            );
+
             newPattern.appendChild(box);
 
-            count = count + 1;
+            count++;
         }
     }
 
-    document.body.appendChild(newPattern);
-    patternCount = patternCount + 1;
+    container.appendChild(newPattern);
+
+    patternCount++;
 }
 
-window.addEventListener('click', () => {
+
+// CLICK ANYWHERE TO GENERATE
+window.addEventListener('click', (event) => {
+
+    // Ignore clicks on controls
+    if (
+        event.target.tagName === 'INPUT' ||
+        event.target.tagName === 'LABEL'
+    ) {
+        return;
+    }
+
     generatePattern();
 });
