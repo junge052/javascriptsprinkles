@@ -11,7 +11,7 @@ const colors = [
 
 let patternCount = 0;
 
-// SLIDERS
+// sliders
 const sizeSlider = document.getElementById('sizeSlider');
 const variationSlider = document.getElementById('variationSlider');
 
@@ -19,13 +19,13 @@ let sprinkleSize = 1;
 let sprinkleVariation = 0;
 
 
-// UPDATE SIZE
+//size
 sizeSlider.addEventListener('input', () => {
     sprinkleSize = parseFloat(sizeSlider.value);
 });
 
 
-// UPDATE VARIATION
+// variation
 variationSlider.addEventListener('input', () => {
     sprinkleVariation = parseFloat(variationSlider.value);
 });

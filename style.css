@@ -7,3 +7,26 @@ body {
     overflow-y: auto;
     background-color: #111;  /* Optional dark background */
 }
+.controls {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+
+    display: flex;
+    gap: 30px;
+
+    font-family: monospace;
+    font-size: 12px;
+
+    z-index: 1000;
+}
+
+.controls label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.controls input {
+    width: 150px;
+}
